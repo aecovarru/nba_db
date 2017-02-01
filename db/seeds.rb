@@ -5,3 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+module Database
+  year = 2016
+  SeasonBuilder.new.build(year)
+  TeamBuilder.new.build(year)
+  GameBuilder.new.build(year)
+  PlayerBuilder.new.build(year)
+  GameStatBuilder.new.build(year)
+  QuarterStatBuilder.new.build(year)
+end
