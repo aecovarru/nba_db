@@ -1,0 +1,31 @@
+.container
+  %ul
+    %li #{season_games_link(@season)}
+.container
+  %h1 #{@away_team.name} vs #{@home_team.name}
+.container
+  %table.table.table-condensed.table-bordered.table-hover
+    %caption #{@away_team.name} Stats
+    %thead
+      %tr
+        %th Name
+        %th MP
+        %th PTS
+        %th FGA
+    %tbody
+      -@away_players.each do |player|
+        %tr
+          %td #{player.name}
+.container
+  %table.table.table-condensed.table-bordered.table-hover
+    %caption #{@home_team.name} Stats
+    %thead
+      %tr
+        %th Name
+        %th MP
+        %th PTS
+        %th FGA
+    %tbody
+      -@home_players.each do |player|
+        %tr
+          %td #{player.name}

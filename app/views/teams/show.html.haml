@@ -1,0 +1,9 @@
+.container
+  %ul
+    %li #{season_teams_link(@season)}
+.container
+  %h1 #{@team.name} Players
+.container
+  %ul
+    -@players.each do |player|
+      %li #{players_link(player)}

@@ -1,0 +1,9 @@
+.container
+  %ul
+    %li #{link_to "Seasons", seasons_path(@season)}
+.container
+  %h1 #{@season.year} Season
+.container
+  %ul
+    %li #{link_to "Teams", season_teams_path(@season)}
+    %li #{link_to "Games", season_games_path(@season)}

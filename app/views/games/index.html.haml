@@ -1,0 +1,20 @@
+%nav.navbar.navbar-default
+  .container.navbar
+    .navbar-header
+      %button.navbar-toggle.collapsed
+    %ul
+      %li #{season_link(@season)}
+.container.header
+  %h1 #{@season.year} Games
+.container.fill
+  %table.table.table-condensed.table-bordered.table-hover
+    %thead
+      %tr
+        -%w(Date URL Link).each do |header|
+          %th #{header}
+    %tbody
+      -@games.each do |game|
+        %tr
+          %td #{game.game_date}
+          %td #{game.url}
+          %td #{game_link(game)}
