@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 gem 'rails', '~> 5.0.1'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
@@ -17,6 +16,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'nokogiri'
 gem 'haml-rails'
 gem 'bootstrap-sass'
+gem 'bcrypt', '~> 3.1.7'
+gem 'jquery-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
