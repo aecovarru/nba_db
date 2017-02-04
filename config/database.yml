@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: nba_db_production
-  username: nba_db
+  username: falcan 
   password: <%= ENV['NBA_DB_DATABASE_PASSWORD'] %>
