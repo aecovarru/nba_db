@@ -102,11 +102,12 @@ module Database
     def substitution
       @on_court.delete(@player2)
       @on_court << @player1
-
       @player_stat1[:time] = @time
-      @player_stat2[:time] = period_minutes if @player_stat2[:time] == 0
-      @player_stat2[:sp] += @player_stat2[:time] - @time
-      @player_stat2[:time] = 0
+      if @player_stat2
+        @player_stat2[:time] = period_minutes if @player_stat2[:time] == 0
+        @player_stat2[:sp] += @player_stat2[:time] - @time
+        @player_stat2[:time] = 0
+      end
     end
 
     def double_foul
