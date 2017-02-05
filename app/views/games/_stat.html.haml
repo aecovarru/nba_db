@@ -1,0 +1,15 @@
+- headers = %w(mp fgm fga thpa thpm fta ftm orb drb ast stl blk tov pf pts)
+%table.table.table-condensed.table-bordered.table-hover
+  %caption #{team.name} Stats
+  %thead
+    %tr
+      %th Name
+      - headers.map(&:upcase).each do |header|
+        %th #{header}
+  %tbody
+    - @away_players.each do |player|
+      - stat = player.stat
+      %tr
+        %td #{player.name}
+        - headers.each do |header|
+          %td #{stat.send header}

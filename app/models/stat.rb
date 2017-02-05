@@ -4,10 +4,12 @@ class Stat < ApplicationRecord
     def valid_stat(key)
       ![:id, :statable_type, :statable_id].include?(key)
     end
-    Hash[self.attributes.map{ |key, value| [key.to_sym, value] }.select{|key, value| valid_stat(key)}]
+    Hash[self.attributes.map{|key, value| [key.to_sym, value]}.select{|key, value| valid_stat(key)}]
   end
 
   def mp
-    return (sp.to_f/60).round(2)
+    minutes = sp/60
+    seconds = "#{sp%60}".rjust(2, "0")
+    "#{minutes}:#{seconds}"
   end
 end
