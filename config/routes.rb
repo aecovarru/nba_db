@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  get 'admin', to: 'access#index'
-  root 'access#index'
+  root 'access#login'
   resources :seasons do
     resources :games
     resources :teams do
