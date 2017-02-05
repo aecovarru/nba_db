@@ -9,7 +9,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @away_team = @game.away_team
     @home_team = @game.home_team
-    @away_players = @game.players_0.where(team: @away_team)
-    @home_players = @game.players_0.where(team: @home_team)
+    @away_players = @game.players0.where(team: @away_team).by_minutes
+    @home_players = @game.players0.where(team: @home_team).by_minutes
   end
 end

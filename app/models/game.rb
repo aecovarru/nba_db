@@ -18,8 +18,8 @@ class Game < ApplicationRecord
   end
 
   [0, 1, 2, 3, 4].each do |quarter|
-    define_method "players_#{quarter}" do
-      periods.find_by(quarter: quarter).players
+    define_method "players#{quarter}" do
+      periods.find_by(quarter: quarter).players.includes(:stat)
     end
   end
 
@@ -29,13 +29,13 @@ class Game < ApplicationRecord
 
   def player_accuracy
     def fix_player_stat(idstr, quarter_stats)
-      player_stat = self.players_0.find_by_idstr(idstr).stat
+      player_stat = self.players0.find_by_idstr(idstr).stat
       player_stat.update(quarter_stats[idstr])
     end
     game_stats = full_game_stats
     quarter_stats = summed_quarter_stats
     accuracy_record = {}
-    players_0.map {|player| player.idstr}.each do |idstr|
+    players0.map {|player| player.idstr}.each do |idstr|
       accurate = game_stats[idstr] == quarter_stats[idstr]
       fix_player_stat(idstr, quarter_stats) unless accurate
       accuracy_record[idstr] = accurate
@@ -64,14 +64,14 @@ class Game < ApplicationRecord
   end
 
   def initial_on_court
-    self.players_0.where(starter: true).map { |player| player.idstr }.to_set
+    self.players0.where(starter: true).map { |player| player.idstr }.to_set
   end
 
   def initialize_player_stats
-    Hash[self.players_0.map { |player| [player.idstr, Stat.new.stat_hash] }]
+    Hash[self.players0.map { |player| [player.idstr, Stat.new.stat_hash] }]
   end
 
   def full_game_stats
-    Hash[self.players_0.includes(:stat).map { |player| [player.idstr, player.stat.stat_hash] }]
+    Hash[self.players0.includes(:stat).map { |player| [player.idstr, player.stat.stat_hash] }]
   end
 end

@@ -36,7 +36,8 @@ module Database
         stat = Stat.find_or_create_by(statable: player)
         next if row.size == 1
         stat_array = @index_hash.map do |key, index|
-          data = index == 1 ? parse_time(row[index]) : row[index].text.to_i
+          text = row[index].text
+          data = index == 1 && text.size != 0 ? parse_time(text) : text.to_i
           [key, data]
         end
         stat.update(Hash[stat_array])

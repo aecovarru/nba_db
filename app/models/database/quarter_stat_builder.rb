@@ -10,7 +10,7 @@ module Database
 
     def build_stats(game)
       puts "#{game.url} #{game.id}"
-      @options = {game: game, players: game.players_0, player_stats: game.initialize_player_stats,
+      @options = {game: game, players: game.players0, player_stats: game.initialize_player_stats,
         quarter: 0, on_court: game.initial_on_court, possessions: 0}
       doc = basketball_reference("/boxscores/pbp/#{game.url}.html")
       if doc
@@ -22,7 +22,7 @@ module Database
     def build_stat(rows)
       until rows.empty?
         row = rows.shift(size(rows))
-        time = parse_time(row[0])
+        time = parse_time(row[0].text)
         add_stats(row[1], time)
         add_stats(row[5], time) unless row.size == 2
       end

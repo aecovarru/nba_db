@@ -27,8 +27,8 @@ module BasketballReference
     return element.attributes["data-append-csv"].value
   end
 
-  def parse_time(element)
-    minutes, seconds = element.text.split(":").map(&:to_i)
+  def parse_time(text)
+    minutes, seconds = text.split(":").map(&:to_i)
     return minutes*60 + seconds
   end
 
