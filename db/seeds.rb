@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 module Database
-  year = 2015
+  year = 2014
   SeasonBuilder.new.build(year)
   TeamBuilder.new.build(year)
   GameBuilder.new.build(year)
