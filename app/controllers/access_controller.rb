@@ -1,6 +1,6 @@
 class AccessController < ApplicationController
 
-  before_action :confirm_logged_in, :except => [:login, :attempt_login, :logout]
+  before_action :confirm_logged_in, except: [:login, :attempt_login, :logout]
 
   def index
   end
@@ -30,7 +30,7 @@ class AccessController < ApplicationController
     session[:user_id] = nil
     session[:username] = nil
     flash[:notice] = "Logged out"
-    redirect_to(:action => "login")
+    redirect_to(action: "login")
   end
   
 end
