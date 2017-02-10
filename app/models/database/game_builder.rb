@@ -4,7 +4,9 @@ module Database
     def build(year)
       @season = Season.find_by(year: year)
       months.each do |month|
-        doc = basketball_reference("/leagues/NBA_#{year}_games-#{month}.html").css(".left")
+        doc = basketball_reference("/leagues/NBA_#{year}_games-#{month}.html")
+        next unless doc
+        doc.css(".left")
         doc.each_slice(4) do |row|
           create_game(row) unless header_row?(row)
         end
