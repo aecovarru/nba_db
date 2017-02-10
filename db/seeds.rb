@@ -7,11 +7,12 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 module Database
-  year = 2014
-  SeasonBuilder.new.build(year)
-  TeamBuilder.new.build(year)
-  GameBuilder.new.build(year)
-  PlayerBuilder.new.build(year)
-  GameStatBuilder.new.build(year)
-  QuarterStatBuilder.new.build(year)
+  (2014..2016).reverse_each do |year| 
+    SeasonBuilder.new.build(year)
+    TeamBuilder.new.build(year)
+    GameBuilder.new.build(year)
+    PlayerBuilder.new.build(year)
+    GameStatBuilder.new.build(year)
+    QuarterStatBuilder.new.build(year)
+  end
 end
