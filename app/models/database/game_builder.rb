@@ -1,13 +1,17 @@
 module Database
   class GameBuilder
     include BasketballReference
+    def test
+      basketball_reference("/leagues/NBA_2012_games-december.html")
+    end
     def build(year)
       @season = Season.find_by(year: year)
       months.each do |month|
         doc = basketball_reference("/leagues/NBA_#{year}_games-#{month}.html")
         next unless doc
-        doc.css(".left")
-        doc.each_slice(4) do |row|
+        css = doc.css(".left")
+        css.each_slice(4) do |row|
+          puts row
           create_game(row) unless header_row?(row)
         end
       end
