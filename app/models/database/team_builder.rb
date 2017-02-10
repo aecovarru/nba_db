@@ -8,8 +8,9 @@ module Database
     end
 
     def get_names(year)
+      no = year <= 2013 ? "Hornets" : "Pelicans"
       tb = "Trail Blazers"
-      %W[Hawks Celtics Nets Hornets Bulls Cavaliers Mavericks Nuggets Pistons Warriors Rockets Pacers Clippers Lakers Grizzlies Heat Bucks Timberwolves Pelicans Knicks Thunder Magic 76ers Suns #{tb} Kings Spurs Raptors Jazz Wizards]
+      %W[Hawks Celtics Nets Hornets Bulls Cavaliers Mavericks Nuggets Pistons Warriors Rockets Pacers Clippers Lakers Grizzlies Heat Bucks Timberwolves #{no} Knicks Thunder Magic 76ers Suns #{tb} Kings Spurs Raptors Jazz Wizards]
     end
 
     def get_countries(year)
@@ -19,7 +20,9 @@ module Database
     end
 
     def get_abbrs(year)
-      %w[ATL BOS BRK CHO CHI CLE DAL DEN DET GSW HOU IND LAC LAL MEM MIA MIL MIN NOP NYK OKC ORL PHI PHO POR SAC SAS TOR UTA WAS]
+      no = year <= 2013 ? "NOH" : "NOP"
+
+      %w[ATL BOS BRK CHO CHI CLE DAL DEN DET GSW HOU IND LAC LAL MEM MIA MIL MIN #{no} NYK OKC ORL PHI PHO POR SAC SAS TOR UTA WAS]
     end
   end
 end
