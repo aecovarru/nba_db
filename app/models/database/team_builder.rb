@@ -8,21 +8,25 @@ module Database
     end
 
     def get_names(year)
+      ch = year <= 2014 ? "Bobcats" : "Hornets"
       no = year <= 2013 ? "Hornets" : "Pelicans"
-      tb = "Trail Blazers"
-      %W[Hawks Celtics Nets Hornets Bulls Cavaliers Mavericks Nuggets Pistons Warriors Rockets Pacers Clippers Lakers Grizzlies Heat Bucks Timberwolves #{no} Knicks Thunder Magic 76ers Suns #{tb} Kings Spurs Raptors Jazz Wizards]
+      ok = year <= 2008 ? "SuperSonics" : "Thunder"
+      %W[Hawks Celtics Nets #{ch} Bulls Cavaliers Mavericks Nuggets Pistons Warriors Rockets Pacers Clippers Lakers Grizzlies Heat Bucks Timberwolves #{no} Knicks #{ok} Magic 76ers Suns Trail\ Blazers Kings Spurs Raptors Jazz Wizards]
     end
 
     def get_countries(year)
-      gs = "Golden State"; la = "Los Angeles"; no = "New Orleans";
-      ny = "New York"; okc = "Oklahoma City"; sa = "San Antonio"
-      %W[Atlanta Boston Brooklyn Charlotte Chicago Cleveland Dallas Denver Detroit #{gs} Houston Indiana #{la} #{la} Memphis Miami Milwaukee Minnesota #{no} #{ny} #{okc} Orlando Philadelphia Phoenix Portland Sacramento #{sa} Toronto Utah Washington]
+      br = year <= 2012 ? "New Jersey" : "Brooklyn"
+      ok = year <= 2008 ? "Seattle" : "Oklahoma City"
+      no = year <= 2007 ? "New Orleans/Oklahoma City" : "New Orleans"
+      %W[Atlanta Boston #{br} Charlotte Chicago Cleveland Dallas Denver Detroit Golden\ State Houston Indiana Los\ Angeles Los\ Angeles Memphis Miami Milwaukee Minnesota #{no} New\ York #{ok} Orlando Philadelphia Phoenix Portland Sacramento San\ Antonio Toronto Utah Washington]
     end
 
     def get_abbrs(year)
-      no = year <= 2013 ? "NOH" : "NOP"
-
-      %w[ATL BOS BRK CHO CHI CLE DAL DEN DET GSW HOU IND LAC LAL MEM MIA MIL MIN #{no} NYK OKC ORL PHI PHO POR SAC SAS TOR UTA WAS]
+      ch = year <= 2014 ? "CHA" : "CHO"
+      no = year <= 2013 ? year <= 2007 ? "NOK" : "NOH" : "NOP"
+      br = year <= 2012 ? "NJN" : "BRK"
+      ok = year <= 2008 ? "SEA" : "OKC"
+      %W[ATL BOS #{br} #{ch} CHI CLE DAL DEN DET GSW HOU IND LAC LAL MEM MIA MIL MIN #{no} NYK #{ok} ORL PHI PHO POR SAC SAS TOR UTA WAS]
     end
   end
 end
