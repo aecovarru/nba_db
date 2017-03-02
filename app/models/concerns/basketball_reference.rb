@@ -1,15 +1,13 @@
 module BasketballReference
   def basketball_reference(endpoint)
-    begin
-      url = File.join("http://www.basketball-reference.com","#{endpoint}")
-      return Nokogiri::HTML(open(url, read_timeout: 10))
-    rescue OpenURI::HTTPError => e
-      puts "URL #{url} not found"
-      return false
-    rescue Net::OpenTimeout => e
-      puts "URL #{url} timeout"
-      return false
-    end
+    url = File.join("http://www.basketball-reference.com", endpoint)
+    return Nokogiri::HTML(open(url, read_timeout: 10))
+  rescue OpenURI::HTTPError => e
+    puts "URL #{url} not found"
+    return false
+  rescue Net::OpenTimeout => e
+    puts "URL #{url} timeout"
+    return false
   end
 
   def create_player(element, intervalable, team, starter=false)
