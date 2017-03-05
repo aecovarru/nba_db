@@ -3,13 +3,8 @@ class Stat < ApplicationRecord
   belongs_to :statable, polymorphic: true
   belongs_to :invervalable, polymorphic: true
 
-  def season
-    statable if statable_type == "Season"
-  end
-
   def team
     statable if statable_type == "Team"
-    player.team if statable_type == "Player"
   end
 
   def player

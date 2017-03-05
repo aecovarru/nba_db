@@ -3,6 +3,7 @@ class CreateStats < ActiveRecord::Migration[5.0]
     create_table :stats do |t|
       t.references :statable, polymorphic: true, index: true
       t.references :intervalable, polymorphic: true, index: true
+      t.boolean :starter
       t.integer :sp, default: 0
       t.integer :fgm, default: 0
       t.integer :fga, default: 0

@@ -13,7 +13,7 @@ module BasketballReference
   def create_player(element, intervalable, team, starter=false)
     name, abbr = parse_name(element)
     idstr = parse_idstr(element)
-    return Player.find_or_create_by(intervalable: intervalable, team: team, name: name, abbr: abbr, idstr: idstr, starter: starter)
+    return Player.find_or_create_by(team: team, name: name, abbr: abbr, idstr: idstr, starter: starter)
   end
 
   def parse_name(element)
