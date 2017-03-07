@@ -1,6 +1,6 @@
 module BasketballReference
-  def basketball_reference(endpoint)
-    url = File.join("http://www.basketball-reference.com", endpoint)
+  def basketball_reference(path)
+    url = File.join("http://www.basketball-reference.com", path)
     return Nokogiri::HTML(open(url, read_timeout: 10))
   rescue OpenURI::HTTPError => e
     puts "URL #{url} not found"
@@ -10,10 +10,15 @@ module BasketballReference
     return false
   end
 
-  def create_player(element, intervalable, team, starter=false)
+  def basketball_data(path, css)
+    doc = basketball_reference(path)
+    return doc.css(css) if doc
+  end
+
+  def player_attr(element)
     name, abbr = parse_name(element)
     idstr = parse_idstr(element)
-    return Player.find_or_create_by(team: team, name: name, abbr: abbr, idstr: idstr, starter: starter)
+    return {name: name, abbr: abbr, idstr: idstr}
   end
 
   def parse_name(element)
@@ -25,7 +30,8 @@ module BasketballReference
     return element.attributes["data-append-csv"].value
   end
 
-  def parse_time(text)
+  def parse_time(element)
+    text = element.text
     minutes, seconds = text.split(":").map(&:to_i)
     return minutes*60 + seconds
   end

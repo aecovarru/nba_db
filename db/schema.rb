@@ -22,14 +22,12 @@ ActiveRecord::Schema.define(version: 20170203065729) do
   end
 
   create_table "games", force: :cascade do |t|
-    t.integer "season_id"
     t.integer "game_date_id"
     t.integer "away_team_id"
     t.integer "home_team_id"
     t.index ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
     t.index ["game_date_id"], name: "index_games_on_game_date_id", using: :btree
     t.index ["home_team_id"], name: "index_games_on_home_team_id", using: :btree
-    t.index ["season_id"], name: "index_games_on_season_id", using: :btree
   end
 
   create_table "periods", force: :cascade do |t|
@@ -39,8 +37,6 @@ ActiveRecord::Schema.define(version: 20170203065729) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.string  "intervalable_type"
-    t.integer "intervalable_id"
     t.integer "team_id"
     t.string  "name"
     t.string  "abbr"
@@ -49,7 +45,6 @@ ActiveRecord::Schema.define(version: 20170203065729) do
     t.boolean "starter"
     t.index ["abbr"], name: "index_players_on_abbr", using: :btree
     t.index ["idstr"], name: "index_players_on_idstr", using: :btree
-    t.index ["intervalable_type", "intervalable_id"], name: "index_players_on_intervalable_type_and_intervalable_id", using: :btree
     t.index ["name"], name: "index_players_on_name", using: :btree
     t.index ["team_id"], name: "index_players_on_team_id", using: :btree
   end
@@ -61,33 +56,37 @@ ActiveRecord::Schema.define(version: 20170203065729) do
   create_table "stats", force: :cascade do |t|
     t.string  "statable_type"
     t.integer "statable_id"
-    t.integer "sp",            default: 0
-    t.integer "fgm",           default: 0
-    t.integer "fga",           default: 0
-    t.integer "thpa",          default: 0
-    t.integer "thpm",          default: 0
-    t.integer "fta",           default: 0
-    t.integer "ftm",           default: 0
-    t.integer "orb",           default: 0
-    t.integer "drb",           default: 0
-    t.integer "ast",           default: 0
-    t.integer "stl",           default: 0
-    t.integer "blk",           default: 0
-    t.integer "tov",           default: 0
-    t.integer "pf",            default: 0
-    t.integer "pts",           default: 0
-    t.float   "pace",          default: 0.0
-    t.float   "ortg",          default: 0.0
-    t.float   "drtg",          default: 0.0
+    t.string  "intervalable_type"
+    t.integer "intervalable_id"
+    t.boolean "starter"
+    t.integer "sp",                default: 0
+    t.integer "fgm",               default: 0
+    t.integer "fga",               default: 0
+    t.integer "thpa",              default: 0
+    t.integer "thpm",              default: 0
+    t.integer "fta",               default: 0
+    t.integer "ftm",               default: 0
+    t.integer "orb",               default: 0
+    t.integer "drb",               default: 0
+    t.integer "ast",               default: 0
+    t.integer "stl",               default: 0
+    t.integer "blk",               default: 0
+    t.integer "tov",               default: 0
+    t.integer "pf",                default: 0
+    t.integer "pts",               default: 0
+    t.float   "pace",              default: 0.0
+    t.float   "ortg",              default: 0.0
+    t.float   "drtg",              default: 0.0
+    t.index ["intervalable_type", "intervalable_id"], name: "index_stats_on_intervalable_type_and_intervalable_id", using: :btree
     t.index ["statable_type", "statable_id"], name: "index_stats_on_statable_type_and_statable_id", using: :btree
   end
 
   create_table "teams", force: :cascade do |t|
     t.integer "season_id"
     t.string  "name"
-    t.string  "country"
     t.string  "abbr"
     t.string  "abbr2"
+    t.string  "country"
     t.index ["abbr"], name: "index_teams_on_abbr", using: :btree
     t.index ["name"], name: "index_teams_on_name", using: :btree
     t.index ["season_id"], name: "index_teams_on_season_id", using: :btree
