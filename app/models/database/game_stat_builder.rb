@@ -8,9 +8,9 @@ module Database
       def build_stats(game)
         puts "#{game.url} #{game.id}"
         period = Period.find_or_create_by(game: game, quarter: 0)
-        [game.away_team, game.home_team].each do |team|
+        doc = basketball_reference("/boxscores/#{game.url}.html")
+        game.teams.each do |team|
           abbr = team.abbr.downcase
-          doc = basketball_reference("/boxscores/#{game.url}.html")
           data = doc.css("#box_#{abbr}_basic .right , #box_#{abbr}_basic .left").to_a
           rows = create_rows(data)
           stats = create_stats(team, period, rows)
@@ -19,13 +19,14 @@ module Database
 
       def create_stats(team, period, rows)
         rows = rows.each_with_index.map do |row, index|
-          player_stats = player_attr(row[0]).merge({season: season, team: team})
+          player_stats = player_attr(row[0]).merge(season: season, team: team)
           player = Player.find_by(player_stats)
           starter = index <= 6
-          stat = Stat.find_or_create_by({intervalable: period, statable: player, starter: starter})
+          stat = Stat.find_or_create_by(intervalable: period, statable: player, starter: starter)
+          next if row.size == 1
           stat_data = ROW_INDICES.map do |stat, index|
             text = row[index].text
-            data = index == 1 && text.size != 0 ? parse_time(text) : text.to_i
+            data = index == 1 && text.size != 0 ? parse_time(row[index]) : text.to_i
             [stat, data]
           end
           stat.update(Hash[stat_data])
@@ -36,12 +37,12 @@ module Database
       def create_rows(data)
         rows = []
         row_num = 0
-        row_size = rows[20].text == "+/-" ? 21 : 20
+        row_size = data[20].text == "+/-" ? 21 : 20
         until data.empty?
           row_num += 1
-          row = rows.shift(size(rows))
-          size = data[1].name == "td" || header?(row) ? @row_size : 1
-          rows << row.shift(size) unless header?(row)
+          size = data[1].name == "td" || header?(data) ? row_size : 1
+          row = data.shift(size)
+          rows << row unless header?(row)
         end
         return rows
       end

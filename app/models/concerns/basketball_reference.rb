@@ -1,6 +1,7 @@
 module BasketballReference
   def basketball_reference(path)
     url = File.join("http://www.basketball-reference.com", path)
+    puts url
     return Nokogiri::HTML(open(url, read_timeout: 10))
   rescue OpenURI::HTTPError => e
     puts "URL #{url} not found"

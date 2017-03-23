@@ -22,12 +22,14 @@ ActiveRecord::Schema.define(version: 20170203065729) do
   end
 
   create_table "games", force: :cascade do |t|
+    t.integer "season_id"
     t.integer "game_date_id"
     t.integer "away_team_id"
     t.integer "home_team_id"
     t.index ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
     t.index ["game_date_id"], name: "index_games_on_game_date_id", using: :btree
     t.index ["home_team_id"], name: "index_games_on_home_team_id", using: :btree
+    t.index ["season_id"], name: "index_games_on_season_id", using: :btree
   end
 
   create_table "periods", force: :cascade do |t|
@@ -37,6 +39,7 @@ ActiveRecord::Schema.define(version: 20170203065729) do
   end
 
   create_table "players", force: :cascade do |t|
+    t.integer "season_id"
     t.integer "team_id"
     t.string  "name"
     t.string  "abbr"
@@ -46,6 +49,7 @@ ActiveRecord::Schema.define(version: 20170203065729) do
     t.index ["abbr"], name: "index_players_on_abbr", using: :btree
     t.index ["idstr"], name: "index_players_on_idstr", using: :btree
     t.index ["name"], name: "index_players_on_name", using: :btree
+    t.index ["season_id"], name: "index_players_on_season_id", using: :btree
     t.index ["team_id"], name: "index_players_on_team_id", using: :btree
   end
 

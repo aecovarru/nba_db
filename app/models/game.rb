@@ -6,12 +6,16 @@ class Game < ApplicationRecord
   belongs_to :away_team, class_name: "Team"
   has_many :periods, dependent: :destroy
 
-  def date
-    game_date.date
+  def teams
+    return away_team, home_team
   end
 
   def url
     "%d%02d%02d0#{home_team.abbr}" % [date.year, date.month, date.day]
+  end
+
+  def full_game
+    periods.find_by(quarter: 0)
   end
 
   def quarters
@@ -19,12 +23,12 @@ class Game < ApplicationRecord
   end
 
   [0, 1, 2, 3, 4].each do |quarter|
-    define_method "players#{quarter}" do
-      periods.find_by(quarter: quarter).players.includes(:stat)
+    define_method "stats#{quarter}" do
+      periods.find_by(quarter: quarter).stats.includes(:statable)
     end
   end
 
-  def quarter_players
-    Player.where(intervalable_type: "Period", intervalable_id: quarters.ids)
+  def method_missing(name, *args, &block)
+    game_date.send(name, *args, &block)
   end
 end

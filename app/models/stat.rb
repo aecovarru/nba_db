@@ -1,18 +1,18 @@
 class Stat < ApplicationRecord
   prepend PlayerStats
   belongs_to :statable, polymorphic: true
-  belongs_to :invervalable, polymorphic: true
-
-  def team
-    statable if statable_type == "Team"
-  end
+  belongs_to :intervalable, polymorphic: true
 
   def player
     statable if statable_type == "Player"
   end
 
+  def team
+    statable if statable_type == "Team"
+  end
+
   def stat_hash
-    Hash[self.attributes.map{|key, value| [key.to_sym, value]}.select{|key, value| ![:id, :statable_type, :statable_id].include?(key)}]
+    Hash[self.attributes.map{|key, value| [key.to_sym, value]}.select{|key, value| ![:id, :statable_id, :statable_type, :intervalable_id, :intervalable_type].include?(key)}]
   end
 
   def mp
@@ -21,6 +21,7 @@ class Stat < ApplicationRecord
     "#{minutes}:#{seconds}"
   end
 
-  def ortg
+  def method_missing(name, *args, &block)
+    intervalable.send(name, *args, &block)
   end
 end

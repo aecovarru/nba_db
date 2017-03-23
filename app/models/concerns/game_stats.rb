@@ -36,14 +36,14 @@ module GameStats
   end
 
   def initial_on_court
-    self.players0.where(starter: true).map { |player| player.idstr }.to_set
+    self.stats0.where(starter: true).map { |stat| stat.idstr }.to_set
   end
 
   def initialize_player_stats
-    Hash[self.players0.map { |player| [player.idstr, Stat.new.stat_hash] }]
+    Hash[self.stats0.map { |stat| [stat.idstr, Stat.new.stat_hash] }]
   end
 
   def full_game_stats
-    Hash[self.players0.includes(:stat).map { |player| [player.idstr, player.stat.stat_hash] }]
+    Hash[self.stats0.map { |stat| [stat.idstr, stat.stat_hash] }]
   end
 end

@@ -3,15 +3,16 @@ module Database
     ROW_SIZE = 4
     def run
       games = game_data.each do |data|
-        Game.find_or_create_by(game_date: game_date, away_team: away_team, home_team: home_team)
+        Game.find_or_create_by(data)
       end
     end
 
     private
       def game_data
         months = [10, 11, 12, 1, 2, 3, 4].map {|num| Date::MONTHNAMES[num].downcase}
-        month_data = months.map do |month| { basketball_data("/leagues/NBA_#{year}_games-#{month}.html", ".left") }.compact
-        rows = month_data.map {|data| data.each_slice(ROW_SIZE) }.flatten(1).reject { |row| header_row?(row) }
+        month_data = months.map { |month| basketball_data("/leagues/NBA_#{year}_games-#{month}.html", ".left") }.compact
+        rows = month_data.map { |data| data.each_slice(ROW_SIZE).to_a }.flatten(1)
+        rows = rows.reject { |row| header_row?(row) }
         rows.map do |row|
           date = parse_date(row)
           away_team, home_team = parse_teams(row)
