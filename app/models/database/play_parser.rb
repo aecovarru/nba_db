@@ -5,7 +5,8 @@ module Database
       @options = options
       @game = options[:game]
       @stats = options[:stats]
-      @on_court = options[:on_court]
+      @away_lineup = options[:away_lineup]
+      @home_lineup = options[:home_lineup]
       @play = options[:play]
       @player1 = options[:player1]
       @player2 = options[:player2]
@@ -15,9 +16,20 @@ module Database
       @quarter = options[:quarter]
     end
 
+    def add_player_to_lineup(player)
+      if player
+        stat = @stats[player]
+        lineup = stat[:team] == @game.away_team ? @away_lineup : @home_lineup
+        unless lineup.size == 5
+          lineup << @player1
+          stat[:starter] = true
+        end
+      end
+    end
+
     def add_stats
-      @on_court << @player1 if @player1 && @on_court.size != 10
-      @on_court << @player2 if @player2 && @on_court.size != 10
+      add_player_to_lineup(@player1)
+      add_player_to_lineup(@player2)
       case @play
       when /Defensive rebound/
         def_reb
@@ -99,8 +111,10 @@ module Database
     end
 
     def substitution
-      @on_court.delete(@player2)
-      @on_court << @player1
+      lineup1 = @stat1[:team] == @game.away_team ? @away_lineup : @home_lineup
+      lineup2 = @stat2[:team] == @game.away_team ? @away_lineup : @home_lineup
+      lineup2.delete(@player2)
+      lineup1 << @player1
       @stat1[:time] = @time
       if @stat2
         @stat2[:time] = period_minutes if @stat2[:time] == 0
@@ -122,20 +136,20 @@ module Database
       case @play
       when /Start of/
         @options[:quarter] += 1
-        reset_minutes
+        reset_seconds
       when /End of/
         add_remaining_players_seconds
         save_stats_to_database
-        reset_players
+        reset_stats
         clear_court
       end
     end
 
-    def reset_minutes
-      @stats.each {|player, stat| stat[:time] = period_minutes}
+    def reset_seconds
+      @stats.each {|player, stat| stat[:time] = period_seconds}
     end
 
-    def reset_players
+    def reset_stats
       @stats = Hash[@stats.map do |idstr, stat|
         id = stat[:player_id]
         stat = Stat.new.stat_hash
@@ -146,34 +160,35 @@ module Database
       end]
     end
 
-    def period_minutes
+    def period_seconds
       @quarter <= 4 ? 12*60 : 5*60
     end
 
     def add_remaining_players_seconds
-      @on_court.each do |player|
-        player_stat = @stats[player]
-        player_stat[:sp] += player_stat[:time]
+      lineups = [@away_lineup, @home_lineup]
+      lineups.each do |lineup|
+        lineup.each do |player|
+          player_stat = @stats[player]
+          player_stat[:sp] += player_stat[:time]
+        end
       end
     end
 
     def save_stats_to_database
       puts @quarter
       period = Period.find_or_create_by(game: @game, quarter: @quarter)
-      @stats.map do |idstr, stat|
+      stats = @stats.map do |idstr, stat|
         player = Player.find(stat[:player_id])
-        stat_hash = stat.reject {|key, value| [:player_id, :time].include?(key)}
+        stat_hash = stat.reject {|key, value| [:player_id, :time, :team].include?(key)}
         stat_hash.merge!(intervalable: period, statable: player)
         Stat.find_or_create_by(stat_hash)
       end
-    end
-
-    def save_stats
-
+      # puts stats.map {|stat| stat.stat_hash}
     end
 
     def clear_court
-      @on_court.clear
+      @away_lineup.clear
+      @home_lineup.clear
     end
   end
 end

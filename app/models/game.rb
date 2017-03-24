@@ -19,12 +19,13 @@ class Game < ApplicationRecord
   end
 
   def quarters
-    periods.where("quarter > 0")
+    periods.where("quarter > 0 AND quarter < 5")
   end
 
-  [0, 1, 2, 3, 4].each do |quarter|
+  [0, 1, 2, 3, 4, 5, 6, 7].each do |quarter|
     define_method "stats#{quarter}" do
-      periods.find_by(quarter: quarter).stats.includes(:statable)
+      period = periods.find_by(quarter: quarter)
+      stats.includes(:statable) if period
     end
   end
 
