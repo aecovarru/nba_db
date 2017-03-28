@@ -175,7 +175,6 @@ module Database
     end
 
     def save_stats_to_database
-      puts @quarter
       period = Period.find_or_create_by(game: @game, quarter: @quarter)
       stats = @stats.map do |idstr, stat|
         player = Player.find(stat[:player_id])
@@ -183,7 +182,6 @@ module Database
         stat_hash.merge!(intervalable: period, statable: player)
         Stat.find_or_create_by(stat_hash)
       end
-      # puts stats.map {|stat| stat.stat_hash}
     end
 
     def clear_court
