@@ -18,6 +18,7 @@ gem 'haml-rails'
 gem 'bootstrap-sass'
 gem 'bcrypt', '~> 3.1.7'
 gem 'jquery-rails'
+gem 'react_on_rails', '8.0.6'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
