@@ -4,6 +4,7 @@ class AccessController < ApplicationController
   before_action :confirm_logged_in, except: [:login, :attempt_login, :logout]
 
   def app
+    @seasons = { seasons: Season.all.to_json }
   end
 
   def login
