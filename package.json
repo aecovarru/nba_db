@@ -1,0 +1,8 @@
+{
+  "name": "nba_db",
+  "private": true,
+  "dependencies": {},
+  "scripts": {
+    "postinstall": "cd client && yarn install"
+  }
+}
